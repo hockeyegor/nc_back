@@ -1,0 +1,36 @@
+version: "3"
+services:
+  # db
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER=postgres
+      POSTGRES_PASSWORD=admin
+      POSTGRES_DB=testdb
+    network_mode: host
+    hostname: 'postgres'
+    restart: unless-stopped
+  # back
+  springbootappssl:
+    image: springbootappssl:latest
+    network_mode: host
+    hostname: 'springbootappssl'
+    container_name: springbootappssl
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+  # front
+  ngcrmdev:
+    image: ngcrmdev:latest
+    network_mode: host
+    hostname: 'ngcrmdev'
+    container_name: ngcrmdev
+    ports:
+      - 81:81
+    depends_on:
+      - springbootappssl
+volumes:
+  postgres-data:
+volumes:
+  postgres-data:
